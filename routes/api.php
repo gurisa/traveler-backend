@@ -25,11 +25,29 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'v0'], function () {
  
 Route::group(['middleware' => ['api']], function () {
     Route::prefix('v0')->group(function() {
+        Route::prefix('users')->group(function() {
+            Route::get('', 'UserController@all');
+        });
+        Route::prefix('employees')->group(function() {
+            Route::get('', 'EmployeeController@all');
+        });
+        Route::prefix('routes')->group(function() {
+            Route::get('', 'RouteController@all');
+        });
         Route::prefix('tickets')->group(function() {
             Route::get('', 'TicketController@all');
         });
-        Route::prefix('users')->group(function() {
-            Route::get('', 'UserController@all');
+        Route::prefix('seats')->group(function() {
+            Route::get('', 'SeatController@all');
+        });
+        Route::prefix('transportations')->group(function() {
+            Route::get('', 'TransportationController@all');
+        });
+        Route::prefix('provinces')->group(function() {
+            Route::get('', 'ProvinceController@all');
+        });
+        Route::prefix('regencies')->group(function() {
+            Route::get('', 'RegencyController@all');
         });
     });
 });
