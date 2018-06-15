@@ -12,6 +12,8 @@ class Transportation extends Model {
     public $timestamps = TRUE;
     public $remember = FALSE;
   
-    protected $fillable = [];
+    protected $fillable = [
+        'name', 'type', 'capacity'
+    ];
     protected $hidden = [];
 }

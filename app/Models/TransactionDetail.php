@@ -12,6 +12,8 @@ class TransactionDetail extends Model {
     public $timestamps = TRUE;
     public $remember = FALSE;
   
-    protected $fillable = [];
+    protected $fillable = [
+        'transaction_id', 'route_id', 'amount', 'price'
+    ];
     protected $hidden = [];
 }

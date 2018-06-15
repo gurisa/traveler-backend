@@ -12,6 +12,8 @@ class Employee extends Model {
     public $timestamps = TRUE;
     public $remember = FALSE;
   
-    protected $fillable = [];
+    protected $fillable = [
+        'name', 'status', 'position',
+    ];
     protected $hidden = [];
 }

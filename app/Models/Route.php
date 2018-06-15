@@ -12,6 +12,8 @@ class Route extends Model {
     public $timestamps = TRUE;
     public $remember = FALSE;
   
-    protected $fillable = [];
+    protected $fillable = [
+        'name', 'origin_id', 'destination_id', 'departure_at', 'return_at', 'transportation_id', 'driver_id'
+    ];
     protected $hidden = [];
 }

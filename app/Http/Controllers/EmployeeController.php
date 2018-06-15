@@ -17,24 +17,31 @@ class EmployeeController extends Controller {
     }
 
     public function store(Request $request) {
-        if ($request->has(['name', 'thumbnail', 'status', 'position'])) {
-            $data = Employee::create([
-                'name' => $request->json('name'),
-                'thumbnail' => $request->json('thumbnail'),
-                'status' => $request->json('status'),
-                'position' => $request->json('position'),
-            ]);
-            return $this->response(true, 200, 'Employee successfully created', $data);
-        }
-        return $this->response(false, 404, 'Data not found');
+        $this->validate($request, [
+            'name' => 'required|string|max:190',
+            'status' => 'required|string|max:190',
+            'position' => 'required|string|max:190',
+        ]);
+
+        $data = Employee::create([
+            'name' => $request->json('name'),
+            'status' => $request->json('status'),
+            'position' => $request->json('position'),
+        ]);
+        return $this->response(true, 200, 'Employee successfully created', $data);
     }
 
     public function update(Request $request, $data) {
         $data = Employee::where('id', '=', $data)->first();
-        if ($data && $request->has(['name', 'thumbnail', 'status', 'position'])) {
+        if ($data) {
+            $this->validate($request, [
+                'name' => 'required|string|max:190',
+                'status' => 'required|string|max:190',
+                'position' => 'required|string|max:190',
+            ]);
+            
             $data->update([
                 'name' => $request->json('name'),
-                'thumbnail' => $request->json('thumbnail'),
                 'status' => $request->json('status'),
                 'position' => $request->json('position'),
             ]);

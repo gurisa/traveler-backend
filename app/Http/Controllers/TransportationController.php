@@ -18,6 +18,11 @@ class TransportationController extends Controller {
 
     public function store(Request $request) {
         if ($request->has(['name', 'type', 'capacity'])) {
+            $this->validate($request, [
+                'name' => 'required|string|max:190',
+                'type' => 'required|string|max:190',
+                'capacity' => 'required|integer|max:190',
+            ]);
             $data = Transportation::create([
                 'name' => $request->json('name'),
                 'type' => $request->json('type'),
@@ -31,6 +36,11 @@ class TransportationController extends Controller {
     public function update(Request $request, $data) {
         $data = Transportation::where('id', '=', $data)->first();
         if ($data && $request->has(['name', 'type', 'capacity'])) {
+            $this->validate($request, [
+                'name' => 'required|string|max:190',
+                'type' => 'required|string|max:190',
+                'capacity' => 'required|integer',
+            ]);
             $data->update([
                 'name' => $request->json('name'),
                 'type' => $request->json('type'),

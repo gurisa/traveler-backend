@@ -17,20 +17,27 @@ class TransactionController extends Controller {
     }
 
     public function store(Request $request) {
-        if ($request->has(['total', 'user_id', 'employee_id'])) {
-            $data = Transaction::create([
-                'total' => $request->json('total'),
-                'user_id' => $request->json('user_id'),
-                'employee_id' => $request->json('employee_id'),
-            ]);
-            return $this->response(true, 200, 'Transaction successfully created', $data);
-        }
-        return $this->response(false, 404, 'Data not found');
+        $this->validate($request, [
+            'total' => 'required|integer',
+            'user_id' => 'required|string|max:11|exists:user,id',
+            'employee_id' => 'required|string|max:11|exists:employee,id',
+        ]);
+        $data = Transaction::create([
+            'total' => $request->json('total'),
+            'user_id' => $request->json('user_id'),
+            'employee_id' => $request->json('employee_id'),
+        ]);
+        return $this->response(true, 200, 'Transaction successfully created', $data);
     }
 
     public function update(Request $request, $data) {
         $data = Transaction::where('id', '=', $data)->first();
-        if ($data && $request->has(['total', 'user_id', 'employee_id'])) {
+        if ($data) {
+            $this->validate($request, [
+                'total' => 'required|integer',
+                'user_id' => 'required|string|max:11|exists:user,id',
+                'employee_id' => 'required|string|max:11|exists:employee,id',
+            ]);
             $data->update([
                 'total' => $request->json('total'),
                 'user_id' => $request->json('user_id'),
