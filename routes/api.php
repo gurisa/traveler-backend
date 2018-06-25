@@ -13,11 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::group(['middleware' => ['jwt.auth'], 'prefix' => 'v0'], function () { //auth:api
+Route::group(['middleware' => [config('app.debug') ? 'api' : 'jwt.auth'], 'prefix' => 'v0'], function () { //auth:api
     Route::prefix('users')->group(function() {
         Route::get('', 'UserController@all');
         Route::get('{id}', 'UserController@retrieve');
@@ -49,8 +49,10 @@ Route::group(['middleware' => ['jwt.auth'], 'prefix' => 'v0'], function () { //a
     Route::prefix('transactions')->group(function() {
         Route::get('', 'TransactionController@all');
         Route::get('{id}', 'TransactionController@retrieve');
+        Route::post('{id}/paid', 'TransactionController@paid');
+        Route::post('{id}/unpaid', 'TransactionController@unpaid');
         Route::post('', 'TransactionController@store');
-        Route::patch('{id}', 'TransactionController@update');
+        Route::patch('{id}', 'TransactionController@update');        
         Route::delete('{id}', 'TransactionController@delete');
     });
 

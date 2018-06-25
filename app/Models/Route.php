@@ -13,7 +13,7 @@ class Route extends Model {
     public $remember = FALSE;
   
     protected $fillable = [
-        'name', 'origin_id', 'destination_id', 'departure_at', 'return_at', 'transportation_id', 'driver_id'
+        'name', 'price', 'origin_id', 'destination_id', 'departure_at', 'return_at', 'transportation_id', 'driver_id'
     ];
     protected $hidden = [];
 }

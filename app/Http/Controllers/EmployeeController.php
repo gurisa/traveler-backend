@@ -19,7 +19,7 @@ class EmployeeController extends Controller {
     public function store(Request $request) {
         $this->validate($request, [
             'name' => 'required|string|max:190',
-            'status' => 'required|string|max:190',
+            'status' => 'required|max:190',
             'position' => 'required|string|max:190',
         ]);
 
@@ -36,7 +36,7 @@ class EmployeeController extends Controller {
         if ($data) {
             $this->validate($request, [
                 'name' => 'required|string|max:190',
-                'status' => 'required|string|max:190',
+                'status' => 'required|max:190',
                 'position' => 'required|string|max:190',
             ]);
             

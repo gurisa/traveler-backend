@@ -4,11 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Transaction as Transaction;
+use App\Models\User as User;
+use App\Models\Employee as Employee;
 
 class TransactionController extends Controller {
 
     public function all() {
-        return ($data = Transaction::all()) ? $this->response(true, 200, 'Transaction retrieve successfully', $data) : $this->response(false, 404, 'Transaction not available');
+        $data = Transaction::all();
+        if ($data) {
+            foreach ($data as $key => $value) {
+                $data[$key]['user_name'] = User::where('id', '=', $value->user_id)->first()->name;
+                $data[$key]['employee_name'] = Employee::where('id', '=', $value->employee_id)->first()->name;
+            }
+            return $this->response(true, 200, 'Transaction retrieve successfully', $data);
+        }
+        return $this->response(false, 404, 'Transaction not available');
     }
 
     public function retrieve($data) {
@@ -42,6 +52,28 @@ class TransactionController extends Controller {
                 'total' => $request->json('total'),
                 'user_id' => $request->json('user_id'),
                 'employee_id' => $request->json('employee_id'),
+            ]);
+            return $this->retrieve($data->id);
+        }
+        return $this->response(false, 404, 'Transaction or data not found');
+    }
+
+    public function paid(Request $request, $data) {
+        $data = Transaction::where('id', '=', $data)->first();
+        if ($data) {
+            $data->update([
+                'status' => '1',
+            ]);
+            return $this->retrieve($data->id);
+        }
+        return $this->response(false, 404, 'Transaction or data not found');
+    }
+
+    public function unpaid(Request $request, $data) {
+        $data = Transaction::where('id', '=', $data)->first();
+        if ($data) {
+            $data->update([
+                'status' => '0',
             ]);
             return $this->retrieve($data->id);
         }
