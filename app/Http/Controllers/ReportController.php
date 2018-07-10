@@ -3,17 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Transportation as Transportation;
 use App\Models\Transaction as Transaction;
 
 class ReportController extends Controller {
 
     public function income() {
-        $data = Transaction::all();
-        if ($data) {
-            return $this->response(true, 200, 'Transaction retrieve successfully', $data);
-        }
-        return $this->response(false, 404, 'Transaction not available');
+        $data = Transaction::selectRaw("MONTH(created_at) AS month, SUM(total) AS total")
+            ->groupBy(DB::raw("MONTH(created_at)"))
+            // ->where('created_at', '>=', date('Y-m-d', strtotime('first day of this year')))
+            // ->where('created_at', '<=', date('Y-m-d', strtotime('last day of this year')))
+            ->get();
+        return ($data) ? $this->response(true, 200, 'Transaction retrieve successfully', $data) : $this->response(false, 404, 'Transaction not available');
     }
 
     public function inventory() {
