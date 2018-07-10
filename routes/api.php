@@ -19,11 +19,13 @@ use Illuminate\Http\Request;
 
 Route::group(['middleware' => [config('app.debug') ? 'api' : 'jwt.auth'], 'prefix' => 'v0'], function () { //auth:api
     Route::prefix('users')->group(function() {
+        Route::get('{id}/transactions', 'UserController@transactions');
+        Route::get('{id}/details', 'UserController@details');
         Route::get('', 'UserController@all');
         Route::get('{id}', 'UserController@retrieve');
         Route::post('', 'UserController@store');
         Route::patch('{id}', 'UserController@update');
-        Route::delete('{id}', 'UserController@delete');            
+        Route::delete('{id}', 'UserController@delete');
     });
 
     Route::prefix('employees')->group(function() {
@@ -41,9 +43,10 @@ Route::group(['middleware' => [config('app.debug') ? 'api' : 'jwt.auth'], 'prefi
     });
 
     Route::prefix('transportations')->group(function() {
+        Route::post('{id}/status', 'TransportationController@status');
         Route::post('', 'TransportationController@store');
         Route::patch('{id}', 'TransportationController@update');
-        Route::delete('{id}', 'TransportationController@delete'); 
+        Route::delete('{id}', 'TransportationController@delete');
     });
     
     Route::prefix('transactions')->group(function() {
@@ -62,6 +65,11 @@ Route::group(['middleware' => [config('app.debug') ? 'api' : 'jwt.auth'], 'prefi
         Route::post('', 'TransactionDetailController@store');
         Route::patch('{id}', 'TransactionDetailController@update');
         Route::delete('{id}', 'TransactionDetailController@delete');
+    });
+
+    Route::prefix('reports')->group(function() {
+        Route::get('income', 'ReportController@income');
+        Route::get('inventory', 'ReportController@inventory');
     });
 });
 

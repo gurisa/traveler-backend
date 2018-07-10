@@ -59,4 +59,16 @@ class TransportationController extends Controller {
         }
         return $this->response(false, 404, 'Transportation not found');
     }
+
+    public function status(Request $request, $data) {
+        $data = Transportation::where('id', '=', $data)->first();
+        if ($data) {
+            $data->update([
+                'status' => !$data->status,
+            ]);
+            return $this->retrieve($data->id);
+        }
+        return $this->response(false, 404, 'Transportation or data not found');
+    }
+
 }

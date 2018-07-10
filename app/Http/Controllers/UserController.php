@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User as User;
+use App\Models\TransactionDetail as TransactionDetail;
 
 class UserController extends Controller {
 
@@ -55,6 +56,29 @@ class UserController extends Controller {
         if ($User) {
             $User->delete();
             return $this->response(true, 200, 'User sucessfully deleted');
+        }
+        return $this->response(false, 404, 'User not found');
+    }
+
+    public function transactions($User) {
+        $User = User::where('id', '=', $User)->orWhere('email', '=', $User)->first();
+        if ($User) {
+            $data = Transaction::where('user_id', '=', $User->id)->get();
+            return $this->response(true, 200, 'Transactions retrieve successfully', $data);
+        }
+        return $this->response(false, 404, 'User not found');
+    }
+
+    public function details($User) {
+        $User = User::where('id', '=', $User)->orWhere('email', '=', $User)->first();
+        if ($User) {
+            $data = TransactionDetail::where('transaction.user_id', '=', $User->id)
+                ->join('transaction', 'transaction.id', '=', 'transaction_detail.transaction_id')
+                ->join('route', 'route.id', '=', 'transaction_detail.route_id')
+                ->select('route.*')
+                ->selectRaw('transaction_detail.amount AS detail_amount, transaction_detail.price AS detail_price, transaction_detail.id AS detail_id, transaction_detail.transaction_id AS transaction_id')                
+                ->get();
+            return $this->response(true, 200, 'Transaction details retrieve successfully', $data);
         }
         return $this->response(false, 404, 'User not found');
     }
