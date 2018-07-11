@@ -17,6 +17,8 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
+//api
+
 Route::group(['middleware' => [config('app.debug') ? 'api' : 'jwt.auth'], 'prefix' => 'v0'], function () { //auth:api
     Route::prefix('users')->group(function() {
         Route::get('{id}/transactions', 'UserController@transactions');
