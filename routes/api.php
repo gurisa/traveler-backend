@@ -17,9 +17,9 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-//api
+//jwt.auth
 
-Route::group(['middleware' => [config('app.debug') ? 'api' : 'jwt.auth'], 'prefix' => 'v0'], function () { //auth:api
+Route::group(['middleware' => [config('app.debug') ? 'api' : 'api'], 'prefix' => 'v0'], function () { //auth:api
     Route::prefix('users')->group(function() {
         Route::get('{id}/transactions', 'UserController@transactions');
         Route::get('{id}/details', 'UserController@details');
@@ -96,6 +96,7 @@ Route::group(['middleware' => ['api']], function () {
         
         Route::prefix('transportations')->group(function() {
             Route::get('', 'TransportationController@all');
+            Route::get('active', 'TransportationController@active');
             Route::get('{id}', 'TransportationController@retrieve');
         });
 

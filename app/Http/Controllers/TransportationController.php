@@ -16,6 +16,11 @@ class TransportationController extends Controller {
         return ($data) ? $this->response(true, 200, 'Transportation retrieve successfully', $data) : $this->response(false, 404, 'Transportation not found');
     }
 
+    public function active() {
+        $data = Transportation::where('status', '=', '1')->get();
+        return ($data) ? $this->response(true, 200, 'Transportation retrieve successfully', $data) : $this->response(false, 404, 'Transportation not found');
+    }
+
     public function store(Request $request) {
         if ($request->has(['name', 'type', 'capacity'])) {
             $this->validate($request, [
