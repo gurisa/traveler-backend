@@ -76,7 +76,8 @@ class UserController extends Controller {
                 ->join('transaction', 'transaction.id', '=', 'transaction_detail.transaction_id')
                 ->join('route', 'route.id', '=', 'transaction_detail.route_id')
                 ->select('route.*')
-                ->selectRaw('transaction_detail.amount AS detail_amount, transaction_detail.price AS detail_price, transaction_detail.id AS detail_id, transaction_detail.status AS detail_status, transaction_detail.transaction_id AS transaction_id')                
+                ->selectRaw('transaction_detail.amount AS detail_amount, transaction_detail.price AS detail_price, transaction_detail.id AS detail_id, transaction_detail.status AS detail_status, transaction_detail.transaction_id AS transaction_id')
+                ->selectRaw('transaction.secret AS transaction_secret')               
                 ->get();                
             if ($data) {
                 foreach ($data as $key => $value) {
