@@ -13,7 +13,7 @@ class Transaction extends Model {
     public $remember = FALSE;
   
     protected $fillable = [
-        'total', 'user_id', 'employee_id', 'status'
+        'total', 'user_id', 'employee_id', 'status', 'secret'
     ];
     protected $hidden = [];
 }
