@@ -34,7 +34,7 @@ class TransactionController extends Controller {
     public function store(Request $request) {
         $this->validate($request, [
             'user_id' => 'required|exists:user,id',
-            'secret' => 'required|integer',
+            'secret' => 'required|string|max:3',
         ]);
         $data = $request->json('data');
         $total = 0; $detail = array(); $valid = true;
