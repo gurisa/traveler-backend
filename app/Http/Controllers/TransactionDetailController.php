@@ -8,11 +8,21 @@ use App\Models\TransactionDetail as TransactionDetail;
 class TransactionDetailController extends Controller {
 
     public function all() {
-        return ($data = TransactionDetail::all()) ? $this->response(true, 200, 'Transaction Detail retrieve successfully', $data) : $this->response(false, 404, 'TransactionDetail not available');
+        $data = TransactionDetail::all();
+        if ($data) {
+            foreach ($data as $key => $value) {
+                $data[$key]['ticket_token'] = md5($value->id);
+            }
+            return $this->response(true, 200, 'Transaction Detail retrieve successfully', $data);
+        }
+        return $this->response(false, 404, 'TransactionDetail not available');
     }
 
     public function retrieve($data) {
         $data = TransactionDetail::where('id', '=', $data)->first();
+        if ($data) {
+            $data->ticket_token = md5($data->id);
+        }
         return ($data) ? $this->response(true, 200, 'Transaction Detail retrieve successfully', $data) : $this->response(false, 404, 'TransactionDetail not found');
     }
 

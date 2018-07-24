@@ -77,7 +77,12 @@ class UserController extends Controller {
                 ->join('route', 'route.id', '=', 'transaction_detail.route_id')
                 ->select('route.*')
                 ->selectRaw('transaction_detail.amount AS detail_amount, transaction_detail.price AS detail_price, transaction_detail.id AS detail_id, transaction_detail.status AS detail_status, transaction_detail.transaction_id AS transaction_id')                
-                ->get();
+                ->get();                
+            if ($data) {
+                foreach ($data as $key => $value) {
+                    $data[$key]['ticket_token'] = md5($value->detail_id);
+                }                
+            }
             return $this->response(true, 200, 'Transaction details retrieve successfully', $data);
         }
         return $this->response(false, 404, 'User not found');

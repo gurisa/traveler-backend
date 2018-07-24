@@ -18,9 +18,7 @@ class RouteController extends Controller {
                 $data[$key]['destination_name'] = Regency::where('id', '=', $value->destination_id)->first()->name;
 
                 $data[$key]['transportation_name'] = Transportation::where('id', '=', $value->transportation_id)->first()->name;
-                $data[$key]['driver_name'] = Employee::where('id', '=', $value->driver_id)->first()->name;
-                
-                $data[$key]['ticket_token'] = md5($value->id);
+                $data[$key]['driver_name'] = Employee::where('id', '=', $value->driver_id)->first()->name;                                
             }
             return $this->response(true, 200, 'Route retrieve successfully', $data);
         }
@@ -29,11 +27,7 @@ class RouteController extends Controller {
 
     public function retrieve($data) {
         $data = Route::where('id', '=', $data)->first();
-        if ($data) {
-            $data->ticket_token = md5($data->id);
-            return ($data) ? $this->response(true, 200, 'Route retrieve successfully', $data) : $this->response(false, 404, 'Route not found');
-        }
-        return $this->response(false, 404, 'Route not available');
+        return ($data) ? $this->response(true, 200, 'Route retrieve successfully', $data) : $this->response(false, 404, 'Route not found');
     }
 
     public function store(Request $request) {  
