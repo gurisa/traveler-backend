@@ -38,9 +38,9 @@ class AuthController extends Controller {
             ]);            
             $credentials = $request->only('email', 'password');            
         }
-        else {
-            $credentials = response()->json(['email' => 'cinta', 'password' => '123456']);
-        }
+        // else {
+        //     $credentials = response()->json(['email' => 'cinta', 'password' => '123456']);
+        // }
 
         try {
             if (!$token = JWTAuth::attempt($credentials)) {

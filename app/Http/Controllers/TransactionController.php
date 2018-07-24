@@ -34,6 +34,7 @@ class TransactionController extends Controller {
     public function store(Request $request) {
         $this->validate($request, [
             'user_id' => 'required|exists:user,id',
+            'secret' => 'required|integer|max:3',
         ]);
         $data = $request->json('data');
         $total = 0; $detail = array(); $valid = true;
@@ -53,6 +54,7 @@ class TransactionController extends Controller {
             $data = Transaction::create([
                 'total' => $total,
                 'user_id' => $request->json('user_id'),
+                'secret' => $request->json('secret'),
                 'employee_id' => null,
             ]);
                 
