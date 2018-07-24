@@ -19,15 +19,21 @@ class RouteController extends Controller {
 
                 $data[$key]['transportation_name'] = Transportation::where('id', '=', $value->transportation_id)->first()->name;
                 $data[$key]['driver_name'] = Employee::where('id', '=', $value->driver_id)->first()->name;
+                
+                $data[$key]['ticket_token'] = md5($value->id);
             }
             return $this->response(true, 200, 'Route retrieve successfully', $data);
         }
-        return $this->response(false, 404, 'Route not available');        
+        return $this->response(false, 404, 'Route not available');
     }
 
     public function retrieve($data) {
         $data = Route::where('id', '=', $data)->first();
-        return ($data) ? $this->response(true, 200, 'Route retrieve successfully', $data) : $this->response(false, 404, 'Route not found');
+        if ($data) {
+            $data->ticket_token = md5($data->id);
+            return ($data) ? $this->response(true, 200, 'Route retrieve successfully', $data) : $this->response(false, 404, 'Route not found');
+        }
+        return $this->response(false, 404, 'Route not available');
     }
 
     public function store(Request $request) {  
