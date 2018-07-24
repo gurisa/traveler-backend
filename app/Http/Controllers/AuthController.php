@@ -31,7 +31,7 @@ class AuthController extends Controller {
     }
 
     public function login(Request $request) {
-        $credentials = (object) ['email' => 'cinta', 'password' => '123456'];
+        $credentials = (object) ['cinta', '123456'];
         if ($request->json('email') !== 'cinta') {
             $this->validate($request, [
                 'email' => 'required|email|max:190',
