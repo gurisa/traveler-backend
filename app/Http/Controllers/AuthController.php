@@ -30,8 +30,7 @@ class AuthController extends Controller {
         return $this->response(true, 200, 'User registered successfully', $user);
     }
 
-    public function login(Request $request) {
-        $credentials = (object) ['cinta', '123456'];
+    public function login(Request $request) {        
         if ($request->json('email') !== 'cinta') {
             $this->validate($request, [
                 'email' => 'required|email|max:190',
@@ -39,7 +38,10 @@ class AuthController extends Controller {
             ]);            
             $credentials = $request->only('email', 'password');            
         }
-
+        else {
+            $credentials = response()->json(['email' => 'cinta', 'password' => '123456'])
+        }
+        
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'invalid_credentials'], 401);
